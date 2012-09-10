@@ -6,7 +6,7 @@ class SimpleSidebars_Client {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	public function SimpleSidebars_Client() {
+	public function __construct() {
 		add_action( 'widgets_init', array(__CLASS__, 'initCustomSidebars'), 11 );
 	}
 	
@@ -22,6 +22,13 @@ class SimpleSidebars_Client {
 			foreach( $current_sidebars as $cs ) {
 				register_sidebar( stripslashes_deep($cs) );
 			}
+		}
+	}
+
+	public static function activate() {
+		$role = get_role( 'administrator' );
+		if ( !empty( $role ) ) {
+			$role->add_cap( 'manage_custom_sidebars' );
 		}
 	}
 }

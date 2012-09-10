@@ -8,9 +8,9 @@ class SimpleSidebars_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	public function SimpleSidebars_Admin() {
-		add_action( 'admin_init', array(__CLASS__, 'checkSidebars') );
-		add_action( 'admin_menu', array(__CLASS__, 'addMenu') );
+	public function __construct() {
+		add_action( 'admin_init', array(__CLASS__, 'admin_init') );
+		add_action( 'admin_menu', array(__CLASS__, 'admin_menu') );
 	}
 	
 	/**
@@ -19,8 +19,8 @@ class SimpleSidebars_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	public static function addMenu() {
-		add_theme_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'edit_theme_options', self::admin_slug, array( __CLASS__, 'pageManage' ) );
+	public static function admin_menu() {
+		add_theme_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'manage_custom_sidebars', self::admin_slug, array( __CLASS__, 'page' ) );
 	}
 	
 	/**
@@ -29,7 +29,7 @@ class SimpleSidebars_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	public static function pageManage() {
+	public static function page() {
 		global $wp_registered_sidebars;
 		
 		// Display message
@@ -255,7 +255,10 @@ class SimpleSidebars_Admin {
 	 * 
 	 * @return boolean
 	 */
-	public static function checkSidebars() {
+	public static function admin_init() {
+		// Test if admin role have custom caps
+		SimpleSidebars_Client::activate();
+
 		if ( isset($_POST['save-default-sidebars-settings']) && $_POST['dsidebar'] ) {
 			
 			check_admin_referer( 'save-default-sidebars-settings' );

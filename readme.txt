@@ -1,5 +1,7 @@
 = Changelog =
 
+* Version 0.5 :
+	* Use custom cap for manage
 * Version 0.4 :
 	* Move page into themes tabs
 	* Use cap "edit_theme_options"

@@ -5,7 +5,7 @@ class SimpleSidebars_Admin_Post {
 	 *
 	 * @return boolean
 	 */
-	public function SimpleSidebars_Admin_Post() {
+	public function __construct() {
 		add_action( 'save_post', array(__CLASS__, 'saveCustomSidebars'), 10, 2 );
 		add_action( 'add_meta_boxes', array(__CLASS__, 'initCustomSidebars'), 10, 2 );
 	}

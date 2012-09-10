@@ -47,8 +47,12 @@ if ( is_admin() ) { // Call admin class
 	require( SS_DIR . '/inc/class.admin.post.php' );
 }
 
-add_action( 'plugins_loaded', 'initSimpleSidebars' );
-function initSimpleSidebars() {
+// Plugin
+register_activation_hook  ( __FILE__, array('SimpleSidebars_Client', 'activate') );
+
+// Init
+add_action( 'plugins_loaded', 'init_simple_sidebars' );
+function init_simple_sidebars() {
 	// Load translations
 	load_plugin_textdomain ( 'simple-sidebars', false, basename(rtrim(dirname(__FILE__), '/')) . '/languages' );
 	
