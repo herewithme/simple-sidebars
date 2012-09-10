@@ -2,10 +2,10 @@
 /*
 Plugin Name: Simple Sidebars
 Plugin URI: http://redmine.beapi.fr/projects/show/simple-sidebars
-Description: Allow to use custom sidebar on each item.
+Description: Allow to use custom sidebar on each page.
 Author: Amaury Balmer
 Author URI: http://www.beapi.fr
-Version: 0.2
+Version: 0.3
 Text Domain: simple-sidebars
 Domain Path: /languages/
 Network: false
@@ -30,12 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-// Allow network activation, enabled code only for network or children
-if ( $wpdb->blogid == 1 )
-	return false;
-
 // Folder name
-define ( 'SS_VERSION', '0.2' );
 define ( 'SS_OPTION',  'simple-sidebars' );
 
 define ( 'SS_URL', plugins_url('', __FILE__) );
@@ -68,4 +63,3 @@ function initSimpleSidebars() {
 		$simple_sidebars['admin-post'] = new SimpleSidebars_Admin_Post();
 	}
 }
-?>

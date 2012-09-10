@@ -1,24 +1,16 @@
 <?php
 class SimpleSidebars_Admin {
-	var $admin_url 	= '';
-	var $admin_slug = 'simple-sidebars-settings';
-	
-	// Error management
-	var $message = '';
-	var $status  = '';
-	
+	const admin_slug = 'simple-sidebars-settings';
+
 	/**
-	 * Constructor
+	 * Constructor, Register hooks
 	 *
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function SimpleSidebars_Admin() {
-		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
-		
-		// Register hooks
-		add_action( 'admin_init', array(&$this, 'checkSidebars') );
-		add_action( 'admin_menu', array(&$this, 'addMenu') );
+	public function SimpleSidebars_Admin() {
+		add_action( 'admin_init', array(__CLASS__, 'checkSidebars') );
+		add_action( 'admin_menu', array(__CLASS__, 'addMenu') );
 	}
 	
 	/**
@@ -27,8 +19,8 @@ class SimpleSidebars_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function addMenu() {
-		add_options_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'manage_options', $this->admin_slug, array( &$this, 'pageManage' ) );
+	public static function addMenu() {
+		add_options_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'manage_options', self::admin_slug, array( __CLASS__, 'pageManage' ) );
 	}
 	
 	/**
@@ -37,14 +29,14 @@ class SimpleSidebars_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function pageManage() {
+	public static function pageManage() {
 		global $wp_registered_sidebars;
 		
 		// Display message
-		$this->displayMessage();
+		settings_errors('simple-sidebars');
 		
 		// Get default settings
-		$default_settings = $this->stripslashes_deep(get_option( SS_OPTION . 'default' ));
+		$default_settings = stripslashes_deep( (array) get_option( SS_OPTION . 'default' ) );
 		
 		// Current sidebars
 		$current_sidebars = get_option( SS_OPTION );
@@ -65,7 +57,7 @@ class SimpleSidebars_Admin {
 			<br />
 			
 			<div id="simple-sidebar-list" class="group">
-				<form action="<?php echo $this->admin_url; ?>" method="post">
+				<form action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>" method="post">
 					<?php if ( is_array($current_sidebars) && !empty($current_sidebars) ) : ?>
 						<table class="widefat">
 							<thead>
@@ -124,7 +116,7 @@ class SimpleSidebars_Admin {
 			<div id="simple-sidebar-add" class="group">
 				<h3><?php _e('Add a sidebar', 'simple-sidebars'); ?></h3>
 				
-				<form method="post" action="<?php echo $this->admin_url; ?>">
+				<form method="post" action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>">
 					<table class="form-table">
 						<tr class="form-field form-required">
 							<th scope="row"><?php _e('ID', 'simple-sidebars'); ?></th>
@@ -166,7 +158,7 @@ class SimpleSidebars_Admin {
 			<div id="simple-sidebar-settings" class="group">
 				<h3><?php _e('Default sidebar settings', 'simple-sidebars'); ?></h3>
 				
-				<form method="post" action="<?php echo $this->admin_url; ?>">
+				<form method="post" action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>">
 					<table class="form-table">
 						<tr class="form-field form-required">
 							<th scope="row"><?php _e('Before widget', 'simple-sidebars'); ?></th>
@@ -194,7 +186,7 @@ class SimpleSidebars_Admin {
 			</div>
 			
 			<div id="simple-sidebar-theme" class="group">
-				<form action="<?php echo $this->admin_url; ?>" method="post">
+				<form action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>" method="post">
 					<?php if ( is_array($wp_registered_sidebars) && !empty($wp_registered_sidebars) ) : ?>
 						<table class="widefat">
 							<thead>
@@ -263,20 +255,20 @@ class SimpleSidebars_Admin {
 	 * 
 	 * @return boolean
 	 */
-	function checkSidebars() {
+	public static function checkSidebars() {
 		if ( isset($_POST['save-default-sidebars-settings']) && $_POST['dsidebar'] ) {
 			
 			check_admin_referer( 'save-default-sidebars-settings' );
 			
-			$this->message = __('Default sidebars settings updated with success !', 'simple-sidebars');
-			update_option( SS_OPTION . 'default' , $this->stripslashes_deep($_POST['dsidebar']) );
+			add_settings_error('simple-sidebars', 'settings_updated', __('Default sidebars settings updated with success !', 'simple-sidebars'), 'updated');
+			update_option( SS_OPTION . 'default' , stripslashes_deep($_POST['dsidebar']) );
 			
 		} elseif( isset($_POST['save-csidebars-hide']) ) {
 				
 			check_admin_referer( 'save-csidebars-hidden' );
 			
-			$this->message = __('Hidden sidebars settings updated with success !', 'simple-sidebars');
-			update_option( SS_OPTION . 'hide' , $this->stripslashes_deep($_POST['hide_sidebar']) );
+			add_settings_error('simple-sidebars', 'settings_updated', __('Hidden sidebars settings updated with success !', 'simple-sidebars'), 'updated');
+			update_option( SS_OPTION . 'hide' , stripslashes_deep($_POST['hide_sidebar']) );
 			
 		} elseif ( isset($_POST['save-csidebars']) ) {
 			
@@ -291,7 +283,7 @@ class SimpleSidebars_Admin {
 				}
 			}
 			
-			$this->message = __('Custom sidebars updated with success !', 'simple-sidebars');
+			add_settings_error('simple-sidebars', 'settings_updated', __('Custom sidebars updated with success !', 'simple-sidebars'), 'updated');
 			update_option( SS_OPTION, $current_sidebars );
 			
 		} elseif ( isset($_POST['add-csidebars']) && !empty($_POST['nsidebar']['id']) ) {
@@ -314,40 +306,12 @@ class SimpleSidebars_Admin {
 			
 			$current_sidebars[$_POST['nsidebar']['id']] = $_POST['nsidebar'];
 			
-			$this->message = __('Custom sidebars added with success !', 'simple-sidebars');
+			add_settings_error('simple-sidebars', 'settings_updated', __('Custom sidebars added with success !', 'simple-sidebars'), 'updated');
 			update_option( SS_OPTION, $current_sidebars );
 			
 		}
 		
 		return false;
-	}
-
-	/**
-	 * Stripslashes on array
-	 */
-	function stripslashes_deep($value) {
-		$value = is_array($value) ? array_map(array(&$this, 'stripslashes_deep'), $value) : stripslashes($value);
-		return $value;
-	}
-	
-	/**
-	 * Display WP alert
-	 *
-	 */
-	function displayMessage() {
-		if ( $this->message != '') {
-			$message = $this->message;
-			$status = $this->status;
-			$this->message = $this->status = ''; // Reset
-		}
-		
-		if ( isset($message) && !empty($message) ) {
-		?>
-			<div id="message" class="<?php echo ($status != '') ? $status :'updated'; ?> fade">
-				<p><strong><?php echo $message; ?></strong></p>
-			</div>
-		<?php
-		}
 	}
 }
 ?>
