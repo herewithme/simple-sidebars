@@ -6,8 +6,8 @@ class SimpleSidebars_Admin_Post {
 	 * @return boolean
 	 */
 	public function __construct() {
-		add_action( 'save_post', array(__CLASS__, 'saveCustomSidebars'), 10, 2 );
-		add_action( 'add_meta_boxes', array(__CLASS__, 'initCustomSidebars'), 10, 2 );
+		add_action( 'save_post', array(__CLASS__, 'save_post'), 10, 2 );
+		add_action( 'add_meta_boxes', array(__CLASS__, 'add_meta_boxes'), 10, 2 );
 	}
 	
 	/**
@@ -18,7 +18,7 @@ class SimpleSidebars_Admin_Post {
 	 * @return boolean
 	 * @author Amaury Balmer
 	 */
-	public static function saveCustomSidebars( $post_ID = 0, $post = null ) {
+	public static function save_post( $post_ID = 0, $post = null ) {
 		// Don't do anything when autosave 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
 			return false;
@@ -44,9 +44,9 @@ class SimpleSidebars_Admin_Post {
 	 * @return boolean
 	 * @author Amaury Balmer
 	 */
-	public static function initCustomSidebars( $post_type = '', $post = null ) {
+	public static function add_meta_boxes( $post_type = '', $post = null ) {
 		foreach( get_post_types( array(), 'names' ) as $post_type ) {
-			add_meta_box('simplesidebar-div', __('Custom sidebar', 'simple-sidebars'), array(__CLASS__, 'custom_sidebar_meta_box'), 'page', 'side');
+			add_meta_box('simplesidebar-div', __('Custom sidebar', 'simple-sidebars'), array(__CLASS__, 'meta_box'), 'page', 'side');
 		}
 	}
 	
@@ -56,7 +56,7 @@ class SimpleSidebars_Admin_Post {
 	 * @param string $object Not used.
 	 * @param string $post_type The post type object.
 	 */
-	public static function custom_sidebar_meta_box( $object, $post_type ) {
+	public static function meta_box( $object, $post_type ) {
 		global $wp_registered_sidebars;
 		
 		// Get value from DB

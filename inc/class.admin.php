@@ -31,12 +31,16 @@ class SimpleSidebars_Admin {
 	 */
 	public static function page() {
 		global $wp_registered_sidebars;
+
+		// Default sidebars fields
+		$default_args = apply_filters( 'simple_sidebars_default_args', array('before_widget' => '', 'after_widget' => '', 'before_title' => '', 'after_title' => '') );
 		
 		// Display message
 		settings_errors('simple-sidebars');
 		
 		// Get default settings
 		$default_settings = stripslashes_deep( (array) get_option( SS_OPTION . 'default' ) );
+		$default_settings = wp_parse_args( $default_settings, $default_args );
 		
 		// Current sidebars
 		$current_sidebars = get_option( SS_OPTION );
@@ -304,6 +308,7 @@ class SimpleSidebars_Admin {
 					$num++;
 					$key_check = isset($current_sidebars[$alt_key]);
 				} while ( $key_check );
+
 				$_POST['nsidebar']['id'] = $alt_key;
 			}
 			
