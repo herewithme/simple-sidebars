@@ -49,17 +49,15 @@ if ( is_admin() ) { // Call admin class
 
 add_action( 'plugins_loaded', 'initSimpleSidebars' );
 function initSimpleSidebars() {
-	global $simple_sidebars;
-	
 	// Load translations
 	load_plugin_textdomain ( 'simple-sidebars', false, basename(rtrim(dirname(__FILE__), '/')) . '/languages' );
 	
 	// Client
-	$simple_sidebars['client-base']  = new SimpleSidebars_Client();
+	new SimpleSidebars_Client();
 	
 	// Admin
 	if ( is_admin() ) {
-		$simple_sidebars['admin-base'] = new SimpleSidebars_Admin();
-		$simple_sidebars['admin-post'] = new SimpleSidebars_Admin_Post();
+		new SimpleSidebars_Admin();
+		new SimpleSidebars_Admin_Post();
 	}
 }

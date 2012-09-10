@@ -20,7 +20,7 @@ class SimpleSidebars_Admin {
 	 * @author Amaury Balmer
 	 */
 	public static function addMenu() {
-		add_options_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'manage_options', self::admin_slug, array( __CLASS__, 'pageManage' ) );
+		add_theme_page( __('Simple Sidebars', 'simple-sidebars'), __('Simple Sidebars', 'simple-sidebars'), 'edit_theme_options', self::admin_slug, array( __CLASS__, 'pageManage' ) );
 	}
 	
 	/**
@@ -57,7 +57,7 @@ class SimpleSidebars_Admin {
 			<br />
 			
 			<div id="simple-sidebar-list" class="group">
-				<form action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>" method="post">
+				<form action="<?php echo admin_url( 'themes.php?page='.self::admin_slug ); ?>" method="post">
 					<?php if ( is_array($current_sidebars) && !empty($current_sidebars) ) : ?>
 						<table class="widefat">
 							<thead>
@@ -116,7 +116,7 @@ class SimpleSidebars_Admin {
 			<div id="simple-sidebar-add" class="group">
 				<h3><?php _e('Add a sidebar', 'simple-sidebars'); ?></h3>
 				
-				<form method="post" action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>">
+				<form method="post" action="<?php echo admin_url( 'themes.php?page='.self::admin_slug ); ?>">
 					<table class="form-table">
 						<tr class="form-field form-required">
 							<th scope="row"><?php _e('ID', 'simple-sidebars'); ?></th>
@@ -158,7 +158,7 @@ class SimpleSidebars_Admin {
 			<div id="simple-sidebar-settings" class="group">
 				<h3><?php _e('Default sidebar settings', 'simple-sidebars'); ?></h3>
 				
-				<form method="post" action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>">
+				<form method="post" action="<?php echo admin_url( 'themes.php?page='.self::admin_slug ); ?>">
 					<table class="form-table">
 						<tr class="form-field form-required">
 							<th scope="row"><?php _e('Before widget', 'simple-sidebars'); ?></th>
@@ -186,7 +186,7 @@ class SimpleSidebars_Admin {
 			</div>
 			
 			<div id="simple-sidebar-theme" class="group">
-				<form action="<?php echo admin_url( 'options-general.php?page='.self::admin_slug ); ?>" method="post">
+				<form action="<?php echo admin_url( 'themes.php?page='.self::admin_slug ); ?>" method="post">
 					<?php if ( is_array($wp_registered_sidebars) && !empty($wp_registered_sidebars) ) : ?>
 						<table class="widefat">
 							<thead>

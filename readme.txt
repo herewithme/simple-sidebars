@@ -1,5 +1,9 @@
 = Changelog =
 
+* Version 0.4 :
+	* Move page into themes tabs
+	* Use cap "edit_theme_options"
+	* Cleanup code
 * Version 0.3 :
 	* Use PHP5 class feature (static)
 	* Use WP API for admin message

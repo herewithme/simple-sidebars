@@ -45,9 +45,9 @@ class SimpleSidebars_Admin_Post {
 	 * @author Amaury Balmer
 	 */
 	public static function initCustomSidebars( $post_type = '', $post = null ) {
-		//foreach( get_post_types( array(), 'names' ) as $post_type ) {
+		foreach( get_post_types( array(), 'names' ) as $post_type ) {
 			add_meta_box('simplesidebar-div', __('Custom sidebar', 'simple-sidebars'), array(__CLASS__, 'custom_sidebar_meta_box'), 'page', 'side');
-		//}
+		}
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class SimpleSidebars_Admin_Post {
 		<?php endif; ?>
 		
 		<p>
-			<a href="<?php echo admin_url('options-general.php?page=simple-sidebars-settings#form-add-sidebar'); ?>" target="_blank"><?php _e('Add a custom sidebar', 'simple-sidebars'); ?></a>
+			<a href="<?php echo admin_url('themes.php?page='.SimpleSidebars_Admin::admin_slug.'#form-add-sidebar'); ?>" target="_blank"><?php _e('Add a custom sidebar', 'simple-sidebars'); ?></a>
 		</p>
 		<?php
 	}
